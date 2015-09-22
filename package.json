@@ -1,0 +1,23 @@
+{
+  "name": "wise-tumblr",
+  "version": "0.0.1",
+  "description": "wise tumblr server",
+  "main": "app.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/teamrun/wise-tumblr.git"
+  },
+  "author": "teamrun",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/teamrun/wise-tumblr/issues"
+  },
+  "homepage": "https://github.com/teamrun/wise-tumblr#readme",
+  "dependencies": {
+    "koa": "^1.0.0",
+    "request": "^2.63.0"
+  }
+}
