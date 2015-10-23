@@ -1,10 +1,11 @@
 var app = require('koa')();
 
-app.use(function* (){
-    this.body = 'wise-tumblr-server response!'
-});
+var setup = require('./lib');
 
-var port = 9016;
-app.listen(port, function(){
-    console.log('server is listening at: %d', port);
+require('./util/crontab');
+
+setup(app);
+
+app.listen(config.port, function(){
+    console.log('app is listening at %s', config.port);
 });
