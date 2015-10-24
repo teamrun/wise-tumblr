@@ -22,7 +22,7 @@ function getLikeDocFromData(name, item){
 // 将likes存储起来
 // 根据 liked_timestamp  新的才有必要做存的操作
 function* saveLikes(name, likes){
-    yield Model.Likes.remove({dt_like: {$gt: 0}});
+    yield Model.Likes.remove();
     console.log('all likes removed');
 
     var lastItem = yield Model.Likes.findOne().sort({ dt_like: -1 });

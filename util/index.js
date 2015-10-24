@@ -13,6 +13,15 @@ function promisefy(asyncFn, ctx){
     }
 }
 
+function wait(time){
+    return new Promise(function(resolve, rejact){
+        setTimeout(function(){
+            resolve();
+        }, time);
+    });
+}
+
 module.exports = {
-    promisefy: promisefy
+    promisefy: promisefy,
+    wait: wait
 };

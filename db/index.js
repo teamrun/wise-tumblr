@@ -3,7 +3,17 @@ var mongoose = require('mongoose');
 var debug = require("debug")('db');
 var requireDir = require('require-dir');
 
-mongoose.connect('mongodb://localhost/tumblr');
+var dbUri;
+var dbConf = config.mongoose;
+if(dbConf.user && dbConf.pass){
+    dbUri = `mongodb://${dbConf.user}:${dbConf.pass}@${dbConf.host}:${dbConf.port}/${dbConf.database}`;
+}
+else{
+    dbUri = `mongodb://${dbConf.host}:${dbConf.port}/${dbConf.database}`
+}
+
+mongoose.connect(dbUri);
+
 var model = {};
 
 var modelSchemas = requireDir('./model');

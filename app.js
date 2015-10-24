@@ -2,7 +2,7 @@ var app = require('koa')();
 
 var setup = require('./lib');
 
-require('./util/crontab');
+// require('./util/crontab');
 
 setup(app);
 
