@@ -53,7 +53,6 @@ function buildPostDoc(item){
         item.fileTypes = typesArr;
     }
 
-
     return item;
 }
 
@@ -80,32 +79,6 @@ function gotOneFile(url, file){
 }
 // 将网络文件写到本地
 function saveNetfiles(urlNamePairs, filePath){
-    // return new Promise(function(resolve, reject){
-        // var dl = new Download({
-        //     mode: '755',
-        //     timeout: 3*1000,
-        //     pool: {
-        //         maxSockets: Infinity
-        //     }
-        // });
-        //
-        // params.forEach(function(url){
-        //     dl.get(url);
-        // });
-        //
-        // dl.dest(filePath)
-        // .run(function(err, data){
-        //     if(err){
-        //         // console.log(`download file error: ${fileName}: `, err.message || err);
-        //         // logErr(err.message, url, fileName);
-        //         resolve();
-        //     }
-        //     else{
-        //         console.log(`write done!`);
-        //         resolve();
-        //     }
-        // });
-    // });
     var promiseArr = [];
     for(var url in urlNamePairs){
         var name = urlNamePairs[url];
@@ -114,7 +87,7 @@ function saveNetfiles(urlNamePairs, filePath){
     return promiseArr;
 }
 
-
+// 保存所有的媒体文件 图片视频
 function* downloadPostFiles(post){
     if(post.type === 'photo'){
         var postId = post.id;
@@ -122,7 +95,6 @@ function* downloadPostFiles(post){
 
         var count = 0;
 
-        // var downloadPromises = post.photos.map(function(item, i){
         var fileUrls = {};
         post.photos.forEach(function(item, i){
             var pArr = [];
@@ -144,7 +116,7 @@ function* downloadPostFiles(post){
         console.log('could not download because type is', post.type);
     }
 }
-
+// 保存单个
 function* saveOne(p){
     var doc = buildPostDoc(p);
 
@@ -158,6 +130,8 @@ function* saveOne(p){
     console.log(`save post ${p.id}'s files & doc done`);
 }
 
+// 将一批posts保存起来
+// 5个并发
 function* savePosts(posts){
     var totalCount = posts.length;
 
