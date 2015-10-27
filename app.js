@@ -8,5 +8,5 @@ require('./util/crontab');
 setup(app);
 
 app.listen(config.port, function(){
-    console.log('app is listening at %s', config.port);
+  console.log('app is listening at %s', config.port);
 });

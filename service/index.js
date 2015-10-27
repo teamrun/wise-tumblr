@@ -10,8 +10,8 @@ var files = requireDir('./', {recurse: true});
 
 var services = {};
 for(var i in files){
-    var sName = _.capitalize(i);
-    services[sName] = files[i].index? files[i].index : files[i];
+  var sName = _.capitalize(i);
+  services[sName] = files[i].index? files[i].index : files[i];
 }
 
 module.exports = services;

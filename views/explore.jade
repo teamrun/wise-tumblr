@@ -1,37 +1,37 @@
 extends ./helper/layout
 
 mixin photoList(photos)
-    ul.img-list
-        each file in photos
-            li.img-item
-              img(src="#{file}")
-    
+  ul.img-list
+    each file in photos
+      li.img-item
+        img(src="#{file}")
+  
 
 block _head
-    title Explore what i saved
-    style.
-        body{
-            padding: 40px;
-            color: #666;
-        }
-        a{
-            color: #4E9BB9;
-        }
-        .img-list{
-            overflow: hidden;
-        }
-        .img-item{
-            overflow: hidden;
-            float: left;
-        }
-        .img-item img{
-            max-width: 300px;
-            max-height: 300px;
-        }
+  title Explore what i saved
+  style.
+    body{
+      padding: 40px;
+      color: #666;
+    }
+    a{
+      color: #4E9BB9;
+    }
+    .img-list{
+      overflow: hidden;
+    }
+    .img-item{
+      overflow: hidden;
+      float: left;
+    }
+    .img-item img{
+      max-width: 300px;
+      max-height: 300px;
+    }
 block _body
-    p Here are what i saved:
-    ul
-        each files, id in mediaFiles
-            li #{id}
-                +photoList(files)
-                
+  p Here are what i saved:
+  ul
+    each files, id in mediaFiles
+      li #{id}
+        +photoList(files)
+        

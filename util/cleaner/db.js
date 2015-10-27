@@ -7,12 +7,12 @@ var needCleanDBs = 'users,posts,likes';
 
 function clearDB(){
   return co(function*(){
-    yield needCleanDBs.split(',').map(function(){
-      var modelName = _.capitalize()
-      return Model[modelName].remove();
-    });
+  yield needCleanDBs.split(',').map(function(){
+    var modelName = _.capitalize()
+    return Model[modelName].remove();
+  });
 
-    console.log('db clean done:', needCleanDBs);
+  console.log('db clean done:', needCleanDBs);
   });
 }
 
