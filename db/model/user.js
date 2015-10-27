@@ -3,7 +3,8 @@ module.exports = {
         name:        String,
         title:       String,
         description: String,
-        url:         String
+        url:         String,
+        likes:       Number
     },
     indexes: {
         name: 1

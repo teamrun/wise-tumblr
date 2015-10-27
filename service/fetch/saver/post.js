@@ -4,8 +4,6 @@ var fs = require('fs');
 var path = require('path');
 
 var _ = require('lodash');
-var Got = require('got');
-var Download = require('download');
 var request = require('request');
 
 var WRITE_FILE_PATH = config.savePath;
@@ -56,33 +54,12 @@ function buildPostDoc(item){
     return item;
 }
 
-function removeFile(file){
-    console.log('remove file', file)
-    fs.unlink(file, function(err, data){});
-}
-
-function gotOneFile(url, file){
-    return new Promise(function(resolve, reject){
-        var readStream = Got.stream(url, {timeout: 10*1000});
-        readStream.on('error', reject);
-        readStream.on('error', function(err){
-            console.log('got file error: ' + err.message + err.stack);
-            removeFile(file);
-            resolve();
-        });
-
-        var writeStream = fs.createWriteStream(file);
-        writeStream.on('finish', resolve);
-
-        readStream.pipe(writeStream);
-    });
-}
 // 将网络文件写到本地
 function saveNetfiles(urlNamePairs, filePath){
     var promiseArr = [];
     for(var url in urlNamePairs){
         var name = urlNamePairs[url];
-        promiseArr.push( gotOneFile(url, path.join(filePath, name )) );
+        promiseArr.push( gotFile(url, path.join(filePath, name )) );
     }
     return promiseArr;
 }
@@ -125,7 +102,8 @@ function* saveOne(p){
     };
     yield {
         file: downloadPostFiles(doc),
-        db: Model.Post.update(query, doc, {upsert: true})
+        db: Model.Post.update(query, doc, {upsert: true}),
+        postUser: Service.User.getUser(p.blog_name)
     };
     console.log(`save post ${p.id}'s files & doc done`);
 }
