@@ -1,8 +1,9 @@
 var app = require('koa')();
+require('babel/register');
 
 var setup = require('./lib');
 
-// require('./util/crontab');
+require('./util/crontab');
 
 setup(app);
 
