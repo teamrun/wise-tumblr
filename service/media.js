@@ -1,7 +1,7 @@
 var fs = require('fs');
 var path = require('path');
 
-var readDir = promisefy(fs.readdir)
+var readDir = promisify(fs.readdir)
 
 var acceptableExts = 'jpg,jpeg,gif,png,mp4,webv'.split(',').map(function(item){
   return '.'+item;

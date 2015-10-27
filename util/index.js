@@ -4,7 +4,7 @@ var path = require('path');
 var debug = require('debug')('bench');
 var Got = require('got');
 
-function promisefy(asyncFn, ctx){
+function promisify(asyncFn, ctx){
   return function(){
     var args = [].slice.call(arguments);
     var start = Date.now();
@@ -49,7 +49,7 @@ function gotFile(url, file){
 }
 
 module.exports = {
-  promisefy,
+  promisify,
   wait,
   gotFile
 };
