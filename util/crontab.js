@@ -28,12 +28,15 @@ function* fetchSchedual(client){
 }
 
 co(function*(){
-    for(var i=0; i<clients.length; i++){
-        var C = clients[i];
-        yield fetchSchedual(C);
-    }
+  // 清理数据库
+  yield cleaner.db();
 
-    debug('fetchSchedual of %d client(s) done! at %s', clients.length, moment().format('YYYY-MM-DD HH:mm:ss'));
+  for(var i=0; i<clients.length; i++){
+    var C = clients[i];
+    yield fetchSchedual(C);
+  }
+
+  debug('fetchSchedual of %d client(s) done! at %s', clients.length, moment().format('YYYY-MM-DD HH:mm:ss'));
 })
 .catch(function(err){
     console.log('err', err.stack || err);
