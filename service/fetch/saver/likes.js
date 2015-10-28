@@ -1,12 +1,3 @@
-// user info
-// dashboard
-// likes
-// following
-
-// like
-// unlike
-// follow
-// unfollow
 var _ = require('lodash');
 
 var savePosts = require('./post');

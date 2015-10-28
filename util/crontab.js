@@ -26,18 +26,19 @@ debug(`init clients done! total ${clients.length}`);
 
 
 function* fetchSchedual(client){
-  yield Fetcher.likes(client);
+  yield Fetcher.dashboard(client);
+  // yield Fetcher.likes(client);
 }
 
 
 
 co(function*(){
   // 清理数据库
-  yield cleaner.db();
+  // yield cleaner.db();
 
   for(var i=0; i<clients.length; i++){
-  var C = clients[i];
-  yield fetchSchedual(C);
+    var C = clients[i];
+    yield fetchSchedual(C);
   }
 
   debug('fetchSchedual of %d client(s) done! at %s', clients.length, moment().format('YYYY-MM-DD HH:mm:ss'));
