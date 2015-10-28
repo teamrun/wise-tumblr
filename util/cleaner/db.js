@@ -3,12 +3,12 @@ var _ = require('lodash');
 
 require('../../lib');
 
-var needCleanDBs = 'users,posts,likes';
+var needCleanDBs = 'user,post,likes';
 
 function clearDB(){
   return co(function*(){
-  yield needCleanDBs.split(',').map(function(){
-    var modelName = _.capitalize()
+  yield needCleanDBs.split(',').map(function(item){
+    var modelName = _.capitalize(item);
     return Model[modelName].remove();
   });
 
@@ -17,4 +17,4 @@ function clearDB(){
 }
 
 
-module.exports = clearDB();
+module.exports = clearDB;
