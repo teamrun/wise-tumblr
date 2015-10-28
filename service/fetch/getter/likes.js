@@ -1,29 +1,8 @@
 var saveLikes = require('../saver/likes');
 
-// 一直do, 直到exitCond返回true
-function* doUtil(fn, exitCond){
-  var ret = [];
-  var loopCount = 0;
-  while(true){
-    var result = yield fn(loopCount);
-    console.log('done fn', loopCount + 1);
-    ret.push(result);
-    if(exitCond(result)){
-      console.log('从循环执行中退出');
-      break;
-    }
-    loopCount++;
-  }
-  return ret;
-}
 
 var PAGE_SIZE = 10;
 module.exports = function* (client){
-
-  // yield Model.Likes.remove();
-  // console.log('all likes removed');
-
-
   // 获取
   var latestLiked = yield Service.Likes.getLatest(client.name);
   console.log('上次保存的最近的一个likes:', latestLiked);
@@ -38,17 +17,16 @@ module.exports = function* (client){
       offset: i*PAGE_SIZE
     });
   }, function(result){
-    // return true;
+    // 只取一页先
+    return true;
     // 判断是否为空 空的话就是没有更新的likes了
     if(result.liked_posts){
       var likedPosts = result.liked_posts;
-      console.log(likedPosts.map(function(item){
-        return item.id;
-      }).join(','));
       if(likedPosts.length === 0){
         return true;
       }
       else{
+        // 是否这批获取的likes已经有上次保存过的了
         return likedPosts.filter(function(item){
           return item.liked_timestamp < alreadySavedLikedTime;
         }).length > 0;

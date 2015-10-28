@@ -36,7 +36,7 @@ function gotFile(url, file){
     var readStream = Got.stream(url, {timeout: 6*1000});
     readStream.on('error', reject);
     readStream.on('error', function(err){
-      console.log('got file error: ' + err.message + err.stack);
+      console.log('got file error: ' + err.message);
       removeFile(file);
       resolve();
     });
@@ -48,8 +48,27 @@ function gotFile(url, file){
   });
 }
 
+
+// 一直do, 直到exitCond返回true
+function* doUtil(fn, exitCond){
+  var ret = [];
+  var loopCount = 0;
+  while(true){
+    var result = yield fn(loopCount);
+    console.log('done fn', loopCount + 1);
+    ret.push(result);
+    if(exitCond(result)){
+      console.log('从循环执行中退出');
+      break;
+    }
+    loopCount++;
+  }
+  return ret;
+}
+
 module.exports = {
   promisify,
   wait,
-  gotFile
+  gotFile,
+  doUtil
 };
