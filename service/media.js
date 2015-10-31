@@ -1,7 +1,8 @@
 var fs = require('fs');
 var path = require('path');
 
-var readDir = promisify(fs.readdir)
+var readDir = promisify(fs.readdir);
+const PHOTO_DIR = config.savePath + '/photo';
 
 var acceptableExts = 'jpg,jpeg,gif,png,mp4,webv'.split(',').map(function(item){
   return '.'+item;
@@ -12,7 +13,7 @@ var MIDDLE_SIZE_REG = /\_500\./;
 var ORIGINAL_SIZE_REG = /\_original\./;
 
 function* explore(){
-  var files = yield readDir(config.savePath);
+  var files = yield readDir(PHOTO_DIR);
   // 过滤出下载的图片, 特征是: 已某些后缀名结尾
   files = files.filter(function(f){
     return acceptableExts.indexOf(path.extname(f)) >= 0;
@@ -20,15 +21,17 @@ function* explore(){
 
   var exploreInfos = {};
   files.forEach(function(f){
-    console.log(f);
-    var id = f.match(ID_REG)[0];
+    let extname = path.extname();
+    let basename = f.replace(extname, '');
+    let [postId, index, size] = basename.split('_');
 
-    var fileUrl = '/media/'+f;
-    if(exploreInfos[id]){
-      exploreInfos[id].push(fileUrl)
+    let fileUrl = `/photo/${postId}/${index}/${size}${extname}`;
+
+    if(exploreInfos[postId]){
+      exploreInfos[postId].push(fileUrl)
     }
     else{
-      exploreInfos[id] = [fileUrl];
+      exploreInfos[postId] = [fileUrl];
     }
   });
 
@@ -51,12 +54,14 @@ function* explore(){
   return exploreInfos;
 }
 
-function serveFile(fPath){
-  return fs.createReadStream(`${config.savePath}/${fPath}`);
+// 简单的拼接出图片地址
+// TODO: detect file是否存在, 不存在的话用原post数据的图片
+function servePhoto({postId, index, sizeNname}){
+  return fs.createReadStream(`${PHOTO_DIR}/${[postId, index, sizeNname].join('_')}`);
 }
 
 
 module.exports = {
-  expore: explore,
-  serveFile: serveFile
+  explore,
+  servePhoto
 };

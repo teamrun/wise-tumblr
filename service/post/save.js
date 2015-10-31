@@ -4,7 +4,7 @@ var _ = require('lodash');
 var co = require('co');
 
 // 保存媒体文件的路径
-var WRITE_FILE_PATH = config.savePath + '/image';
+var WRITE_FILE_PATH = config.savePath + '/photo';
 
 // 从获取的网络response中构建doc
 function buildPostDoc(item){
@@ -65,10 +65,32 @@ function* downloadPostFiles(post){
         fileUrls[item.original.url] = `${postId}_${i}_original.${fileTypes[i]}`;
       }
     });
-    yield saveNetfiles(fileUrls, WRITE_FILE_PATH);
+    return yield saveNetfiles(fileUrls, WRITE_FILE_PATH);
   }
   else{
-    console.log('could not download because type is', post.type);
+    //  "video_url": "https://vt.tumblr.com/tumblr_nvb0075Tm61ufwk6d.mp4",
+    // "html5_capable": true,
+    // "thumbnail_url": "https://31.media.tumblr.com/tumblr_nvb0075Tm61ufwk6d_frame1.jpg",
+    // "thumbnail_width": 720,
+    // "thumbnail_height": 404,
+    // "duration": 58,
+
+
+    // "video_url": "https://vt.tumblr.com/tumblr_nw2fw18hh11r0flj3_720.mp4",
+    //    "html5_capable": true,
+    //    "thumbnail_url": "https://31.media.tumblr.com/tumblr_nw2fw18hh11r0flj3_frame1.jpg",
+    //    "thumbnail_width": 1920,
+    //    "thumbnail_height": 1080,
+    //    "duration": 60,
+
+
+    // "video_url": "https://vt.tumblr.com/tumblr_nu79k3HPrY1utfe3x.mp4",
+    // "html5_capable": true,
+    // "thumbnail_url": "https://31.media.tumblr.com/tumblr_nu79k3HPrY1utfe3x_frame1.jpg",
+    // "thumbnail_width": 640,
+    // "thumbnail_height": 358,
+    // "duration": 61,
+    return `count node download because type is ${post.type}`;
   }
 }
 // 保存单个
@@ -83,12 +105,12 @@ function* savePost(p){
     coverImgUrl = p.trail[0].blog.theme.header_image;
   }
   // console.log('cover image url: ', coverImgUrl);
-  yield {
+  let ret = yield {
     file: downloadPostFiles(doc),
     db: Model.Post.update(query, doc, {upsert: true}),
     postUser: Service.User.saveIfNotExist(p.blog_name, coverImgUrl)
   };
-  console.log(`save post ${p.id}'s files & doc done`);
+  console.log(ret.file);
 }
 
 var saveIfNotExist = (p) => {

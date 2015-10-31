@@ -1,3 +1,4 @@
+var _ = require('lodash');
 var co = require('co');
 var GraphQLTypes = require('graphql/type');
 
@@ -11,7 +12,7 @@ const {
   GraphQLList } = GraphQLTypes;
 
 
-var Types = require('./types');
+var {UserType, PostType} = require('./types');
 
 
 var schema = new GraphQLSchema({
@@ -25,7 +26,7 @@ var schema = new GraphQLSchema({
         }
       },
       user: {
-        type: Types.UserType,
+        type: UserType,
         args: {
           name: {
             type: new GraphQLNonNull(GraphQLString),
@@ -34,6 +35,18 @@ var schema = new GraphQLSchema({
         },
         resolve: function(obj, param) {
           return co(Service.User.getUser(param.name));
+        }
+      },
+      post: {
+        type: PostType,
+        args: {
+          id: {
+            type: new GraphQLNonNull(GraphQLInt),
+            description: 'post id'
+          }
+        },
+        resolve: (obj, param) => {
+          return Model.Post.findOne({id: param.id});
         }
       }
     }

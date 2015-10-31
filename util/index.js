@@ -26,23 +26,23 @@ function wait(time){
 }
 
 function removeFile(file){
-  console.log('remove file', file)
   fs.unlink(file, function(err, data){});
 }
 
 
 function gotFile(url, file){
   return new Promise(function(resolve, reject){
-    var readStream = Got.stream(url, {timeout: 6*1000});
-    readStream.on('error', reject);
+    var readStream = Got.stream(url, {timeout: 4*1000});
+    // readStream.on('error', reject);
     readStream.on('error', function(err){
-      console.log('got file error: ' + err.message);
       removeFile(file);
-      resolve();
+      resolve(`${err.message}  on ${path.basename(file)}`);
     });
 
     var writeStream = fs.createWriteStream(file);
-    writeStream.on('finish', resolve);
+    writeStream.on('finish', () => {
+      resolve(`${path.basename(file)}`);
+    });
 
     readStream.pipe(writeStream);
   });

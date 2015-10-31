@@ -18,7 +18,7 @@ module.exports = function* (client){
     });
   }, function(result){
     // 只取一页先
-    return true;
+    // return true;
     // 判断是否为空 空的话就是没有更新的likes了
     if(result.liked_posts){
       var likedPosts = result.liked_posts;
