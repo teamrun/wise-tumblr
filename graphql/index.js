@@ -48,6 +48,18 @@ var schema = new GraphQLSchema({
         resolve: (obj, param) => {
           return Model.Post.findOne({id: param.id});
         }
+      },
+      likes: {
+        type: new GraphQLList(PostType),
+        args: {
+          name: {
+            type: new GraphQLNonNull(GraphQLString),
+            description: '用户名'
+          }
+        },
+        resolve: (obj, param) => {
+          return Service.Likes.getUserLikePosts(param.name);
+        }
       }
     }
   })

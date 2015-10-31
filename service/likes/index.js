@@ -1,3 +1,5 @@
+let _ = require('lodash');
+
 let LikesModel = Model.Likes;
 let PostModel = Model.Post;
 
