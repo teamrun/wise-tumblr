@@ -26,8 +26,9 @@ debug(`init clients done! total ${clients.length}`);
 
 
 function* fetchSchedual(client){
+  yield Fetcher.following(client);
   yield Fetcher.dashboard(client);
-  // yield Fetcher.likes(client);
+  yield Fetcher.likes(client);
 }
 
 

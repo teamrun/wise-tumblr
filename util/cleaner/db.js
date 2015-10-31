@@ -3,7 +3,7 @@ var _ = require('lodash');
 
 require('../../lib');
 
-var needCleanDBs = 'user,post,likes';
+var needCleanDBs = 'user,post,likes,follow';
 
 function clearDB(){
   return co(function*(){
