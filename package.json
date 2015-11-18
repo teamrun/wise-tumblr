@@ -37,7 +37,8 @@
     "mongoose": "^4.1.10",
     "react": "^0.13.3",
     "request": "^2.65.0",
-    "require-dir": "^0.3.0"
+    "require-dir": "^0.3.0",
+    "tumblr.js": "0.0.7"
   },
   "devDependencies": {
     "babel-core": "^5.8.25",
