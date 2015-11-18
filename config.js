@@ -1,7 +1,6 @@
 module.exports ={
   appPath: __dirname,
   port: 9016,
-  savePath: '/Users/chenllos/Documents/tumblr',
   mongoose: {
     host       : "localhost",
     port       : "27017",
@@ -10,6 +9,6 @@ module.exports ={
     database   : "tumblr"
   },
   tumblr: {
-    
+
   }
 };

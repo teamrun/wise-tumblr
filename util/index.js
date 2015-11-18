@@ -2,7 +2,6 @@ var fs = require('fs');
 var path = require('path');
 
 var debug = require('debug')('bench');
-var Got = require('got');
 
 function promisify(asyncFn, ctx){
   return function(){
@@ -22,29 +21,6 @@ function wait(time){
     setTimeout(function(){
       resolve();
     }, time);
-  });
-}
-
-function removeFile(file){
-  fs.unlink(file, function(err, data){});
-}
-
-
-function gotFile(url, file){
-  return new Promise(function(resolve, reject){
-    var readStream = Got.stream(url, {timeout: 4*1000});
-    // readStream.on('error', reject);
-    readStream.on('error', function(err){
-      removeFile(file);
-      resolve(`${err.message}  on ${path.basename(file)}`);
-    });
-
-    var writeStream = fs.createWriteStream(file);
-    writeStream.on('finish', () => {
-      resolve(`${path.basename(file)}`);
-    });
-
-    readStream.pipe(writeStream);
   });
 }
 
@@ -69,6 +45,5 @@ function* doUtil(fn, exitCond){
 module.exports = {
   promisify,
   wait,
-  gotFile,
   doUtil
 };

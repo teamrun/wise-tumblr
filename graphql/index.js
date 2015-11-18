@@ -12,9 +12,6 @@ const {
   GraphQLList } = GraphQLTypes;
 
 
-var {UserType, PostType} = require('./types');
-
-
 var schema = new GraphQLSchema({
   query: new GraphQLObjectType({
     name: 'query',
@@ -25,50 +22,6 @@ var schema = new GraphQLSchema({
           return 'world';
         }
       },
-      user: {
-        type: UserType,
-        args: {
-          name: {
-            type: new GraphQLNonNull(GraphQLString),
-            description: '用户(blog)name'
-          }
-        },
-        resolve: function(obj, param) {
-          return co(Service.User.getUser(param.name));
-        }
-      },
-      post: {
-        type: PostType,
-        args: {
-          id: {
-            type: new GraphQLNonNull(GraphQLInt),
-            description: 'post id'
-          }
-        },
-        resolve: (obj, param) => {
-          return Model.Post.findOne({id: param.id});
-        }
-      },
-      likes: {
-        type: new GraphQLList(PostType),
-        args: {
-          name: {
-            type: new GraphQLNonNull(GraphQLString),
-            description: '用户名'
-          },
-          skip: {
-            type: GraphQLInt,
-            description: '跳过过少个'
-          },
-          limit: {
-            type: GraphQLInt,
-            description: '限制多少个'
-          }
-        },
-        resolve: (obj, param) => {
-          return Service.Likes.getUserLikePosts(param.name);
-        }
-      }
     }
   })
 });
