@@ -56,8 +56,8 @@ function* explore(){
 
 // 简单的拼接出图片地址
 // TODO: detect file是否存在, 不存在的话用原post数据的图片
-function servePhoto({postId, index, sizeNname}){
-  return fs.createReadStream(`${PHOTO_DIR}/${[postId, index, sizeNname].join('_')}`);
+function servePhoto({postId, index, sizeName}){
+  return fs.createReadStream(`${PHOTO_DIR}/${[postId, index, sizeName].join('_')}`);
 }
 
 

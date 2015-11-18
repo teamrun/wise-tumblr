@@ -55,6 +55,14 @@ var schema = new GraphQLSchema({
           name: {
             type: new GraphQLNonNull(GraphQLString),
             description: '用户名'
+          },
+          skip: {
+            type: GraphQLInt,
+            description: '跳过过少个'
+          },
+          limit: {
+            type: GraphQLInt,
+            description: '限制多少个'
           }
         },
         resolve: (obj, param) => {
