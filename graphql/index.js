@@ -61,6 +61,8 @@ var schema = new GraphQLSchema({
 
       dashboard: {
         type: new GraphQLList(PostType),
+        // 获取最新的posts: 不传sinceId, 只传limit
+        // 下拉加载更多: 传sinceId, 传limit
         args: _.assign({}, loggedInUser, {
           siceId: {
             type: GraphQLInt,

@@ -91,7 +91,6 @@ let PhotoResourceType = new GraphQLObjectType({
         type: ImageType,
         description: '大尺寸的图片',
         resolve: (resource) => {
-          console.log(resource);
           return resource.original_size;
         }
       }
