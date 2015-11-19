@@ -52,7 +52,12 @@ let ImageType = new GraphQLObjectType({
   description: '图片资源 包括: url, width, height',
   fields: () => {
     return {
-      url: {type: GraphQLString},
+      url: {
+        type: GraphQLString,
+        resolve: (img) => {
+          return '/fileproxy?url=' + img.url;
+        }
+      },
       width: {type: GraphQLInt},
       height: {type: GraphQLInt}
     };
@@ -68,26 +73,26 @@ let PhotoResourceType = new GraphQLObjectType({
         type: GraphQLString,
         description: '图片说明'
       },
-      thumbnail: {
-        type: ImageType,
-        description: '中等尺寸的图片',
-        resolve: (photos) => {
-          let {postId, index, original} = photos;
-          var mSize = photos['500'];
-          return _.assign({}, mSize, {
-            url: `/photo/${postId}/${index}/500${path.extname(mSize.url)}`
-          });
+      alt_sizes: {
+        type: new GraphQLList(ImageType),
+        description: '其他可选尺寸的图片',
+        resolve: (resource) => {
+          return resource.alt_sizes;
         }
       },
-      original: {
+      thumbnail: {
+        type: ImageType,
+        description: '缩略尺寸的图片',
+        resolve: (resource) => {
+          return resource.alt_sizes[1];
+        }
+      },
+      original_size: {
         type: ImageType,
         description: '大尺寸的图片',
-        resolve: (photos) => {
-          let {postId, index, original} = photos;
-          var originalSize = photos.original;
-          return _.assign({}, originalSize, {
-            url: `/photo/${postId}/${index}/original${path.extname(originalSize.url)}`
-          });
+        resolve: (resource) => {
+          console.log(resource);
+          return resource.original_size;
         }
       }
     }
@@ -152,6 +157,9 @@ let PostType = new GraphQLObjectType({
         type: new GraphQLList(PhotoResourceType),
         description: 'post 图片',
         resolve: function(post){
+          if(post.type !== 'photo'){
+            return [];
+          }
           return post.photos.map(function(item, i){
             return _.assign({}, item, {
               postId: post.id,

@@ -2,6 +2,8 @@ import _ from 'lodash';
 
 import clients from './client';
 
+let foo = {foo: 'bar'};
+
 
 export default {
   blogInfo: (blogName) => {
@@ -15,5 +17,18 @@ export default {
       .then((data) => {
         return data.avatar_url;
       })
+  },
+  // dashboard, 获取最新posts数据
+  // 传sinceId, 传limit
+  dashboard: (user, sinceId, limit) => {
+    return clients[user].dashboard({
+      limit: limit,
+      sinceId: sinceId
+    }).then((data) => {
+      // console.log(data.posts.map(function(item){
+      //   return item.photos
+      // }));
+      return data.posts;
+    });
   }
 }

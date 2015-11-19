@@ -44,6 +44,7 @@ var schema = new GraphQLSchema({
           return Service.blogInfo(param.name);
         }
       },
+
       avatar: {
         type: GraphQLString,
         args: _.assign({
@@ -56,7 +57,26 @@ var schema = new GraphQLSchema({
           param.size = param.size || 128;
           return Service.avatar(param);
         }
+      },
+
+      dashboard: {
+        type: new GraphQLList(PostType),
+        args: _.assign({}, loggedInUser, {
+          siceId: {
+            type: GraphQLInt,
+            description: '边界博文的id, 取这个之前的posts'
+          },
+          limit: {
+            type: GraphQLInt,
+            description: '取多少个, 默认为20'
+          }
+        }),
+        resolve: (obj, param) => {
+          return Service.dashboard(param.user, param.sinceId, param.limit);
+        }
       }
+
+      // ----------- query ends here -----------
     }
   })
 });
