@@ -12,7 +12,7 @@ const {
   GraphQLList } = GraphQLTypes;
 
 
-var {UserType, PostType} = require('./types');
+var {UserType, PostType, LikesType} = require('./types');
 
 const loggedInUser = {
   user: {
@@ -75,6 +75,34 @@ var schema = new GraphQLSchema({
         }),
         resolve: (obj, param) => {
           return Service.dashboard(param.user, param.sinceId, param.limit);
+        }
+      },
+      likes: {
+        type: LikesType,
+        /*
+          获取的时候 一直是从最新liked的开始拿的
+          可用after来检查是否有最新的likes
+        */
+        args:  _.assign({}, loggedInUser, {
+          after: {
+            type: GraphQLInt,
+            description: '边界参数 三选一 在这个秒之后like的posts'
+          },
+          before: {
+            type: GraphQLInt,
+            description: '边界参数 三选一 在这个秒之前like的posts'
+          },
+          skip: {
+            type: GraphQLInt,
+            description: '边界参数 三选一 跳过多少个'
+          },
+          limit: {
+            type: GraphQLInt,
+            description: '取多少个, 默认为20'
+          }
+        }),
+        resolve: (obj, param) => {
+          return Service.likes(param);
         }
       }
 

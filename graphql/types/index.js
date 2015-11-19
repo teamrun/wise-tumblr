@@ -98,84 +98,114 @@ let PhotoResourceType = new GraphQLObjectType({
   }
 });
 
+// 将post对象的所有属性拿出来 方便复用
+let _post_obj_fields = {
+  id: {
+    type: GraphQLString,
+    description: 'id, 唯一标识',
+  },
+  blog_name: {
+    type: GraphQLString,
+    description: '发布者的名字',
+  },
+  post_url: {
+    type: GraphQLString,
+    description: 'post的页面地址 定位到这个post的tumblr页面',
+  },
+  type: {
+    type: GraphQLString,
+    description: '类型 text/photo/video',
+  },
+  timestamp: {
+    type: GraphQLInt,
+    description: '发布的时间戳 秒',
+  },
+  date: {
+    type: GraphQLString,
+    description: '发布时间',
+  },
+  format: {
+    type: GraphQLString,
+    description: '文本格式 html/markdown',
+  },
+  reblog_key: {
+    type: GraphQLString,
+    description: '转发标识',
+  },
+  tags: {
+    type: new GraphQLList(GraphQLString),
+    description: 'tag数组',
+  },
+
+  state: {
+    type: GraphQLString,
+    description: 'post状态 已发布 还是草稿'
+  },
+  title: {
+    type: GraphQLString,
+    description: 'post标题'
+  },  // The optional title of the post
+  body: {
+    type: GraphQLString,
+    description: '正文'
+  },  // The full post body
+  photos: {
+    type: new GraphQLList(PhotoResourceType),
+    description: 'post 图片',
+    resolve: function(post){
+      if(post.type !== 'photo'){
+        return [];
+      }
+      return post.photos.map(function(item, i){
+        return _.assign({}, item, {
+          postId: post.id,
+          index: i
+        });
+      })
+    }
+  },
+  caption: {
+    type: GraphQLString,
+    description: 'photo or video的描述'
+  },
+};
+
 let PostType = new GraphQLObjectType({
   name: 'PostType',
   description: '发布的post的模型',
   fields: () => {
-    return {
-      id: {
-        type: GraphQLString,
-        description: 'id, 唯一标识',
-      },
-      blog_name: {
-        type: GraphQLString,
-        description: '发布者的名字',
-      },
-      post_url: {
-        type: GraphQLString,
-        description: 'post的页面地址 定位到这个post的tumblr页面',
-      },
-      type: {
-        type: GraphQLString,
-        description: '类型 text/photo/video',
-      },
-      timestamp: {
-        type: GraphQLInt,
-        description: '发布的时间戳 秒',
-      },
-      date: {
-        type: GraphQLString,
-        description: '发布时间',
-      },
-      format: {
-        type: GraphQLString,
-        description: '文本格式 html/markdown',
-      },
-      reblog_key: {
-        type: GraphQLString,
-        description: '转发标识',
-      },
-      tags: {
-        type: new GraphQLList(GraphQLString),
-        description: 'tag数组',
-      },
+    return _post_obj_fields
+  }
+});
 
-      state: {
-        type: GraphQLString,
-        description: 'post状态 已发布 还是草稿'
-      },
-      title: {
-        type: GraphQLString,
-        description: 'post标题'
-      },  // The optional title of the post
-      body: {
-        type: GraphQLString,
-        description: '正文'
-      },  // The full post body
-      photos: {
-        type: new GraphQLList(PhotoResourceType),
-        description: 'post 图片',
-        resolve: function(post){
-          if(post.type !== 'photo'){
-            return [];
-          }
-          return post.photos.map(function(item, i){
-            return _.assign({}, item, {
-              postId: post.id,
-              index: i
-            });
-          })
-        }
-      },
-      caption: {
-        type: GraphQLString,
-        description: 'photo or video的描述'
-      },
+let LikedPostType = new GraphQLObjectType({
+  name: 'LikedPostType',
+  description: 'likes 返回的post数据, 比原始的post多一些属性',
+  fields: _.merge({}, _post_obj_fields, {
+    liked_timestamp: {
+      type: GraphQLInt,
+      description: 'like操作的时间 unix秒'
     }
+  })
+});
+
+let LikesType = new GraphQLObjectType({
+  name: 'LikesType',
+  description: '获取likes的返回数据 封装了post list 和 liked_coutn',
+  fields: {
+    liked_posts: {
+      type: new GraphQLList(LikedPostType),
+      description: 'like了的post的列表'
+    },
+    liked_count: {
+      type: GraphQLInt,
+      description: 'like了的个数'
+    },
   }
 });
 
 module.exports = {
   UserType,
-  PostType
+  PostType,
+  LikesType
 };

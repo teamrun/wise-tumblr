@@ -30,5 +30,15 @@ export default {
       // }));
       return data.posts;
     });
+  },
+  likes: ({user, skip, limit, after, before}) => {
+    return clients[user].likes({
+      limit: limit,
+      skip: skip,
+      after: after,
+      before: before
+    }).then((data) => {
+      return data;
+    });
   }
 }
