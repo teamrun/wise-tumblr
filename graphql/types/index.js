@@ -4,6 +4,7 @@ var _ = require('lodash');
 var moment = require('moment');
 var types = require('graphql/type');
 
+
 const {
   GraphQLObjectType,
   GraphQLNonNull,
@@ -11,6 +12,12 @@ const {
   GraphQLString,
   GraphQLInt,
   GraphQLList } = types;
+
+
+const host = (process.env.NODE_ENV === 'porduction')? 'http://chenllos.com:9016' : 'http://localhost:9016';
+let processResourceUrl = (url) => {
+  return host + '/fileproxy?url=' + url;
+}
 
 
 
@@ -35,13 +42,25 @@ var UserType = new GraphQLObjectType({
         type: GraphQLString,
         description: 'tumblr主页链接地址'
       },
-      likes:  {
-        type: GraphQLInt,
-        description: 'likes的个数'
-      },
       avatar: {
-        type: GraphQLInt,
-        description: '头像地址'
+        type: GraphQLString,
+        description: '头像',
+        // 这里还可以再定义参数!!!!
+        // 跟schema中的GraphQLObjectType一样
+        // 访问每一个属性都可以添加参数
+        args: {
+          size: {
+            type: GraphQLInt
+          }
+        },
+        resolve: (user, param) => {
+          let name = user.name;
+          let size = param.size;
+          return Service.avatar({name, size})
+            .then((url) => {
+              return processResourceUrl(url);
+            });
+        }
       }
     }
   }
@@ -55,7 +74,7 @@ let ImageType = new GraphQLObjectType({
       url: {
         type: GraphQLString,
         resolve: (img) => {
-          return '/fileproxy?url=' + img.url;
+          return processResourceUrl(img.url);
         }
       },
       width: {type: GraphQLInt},

@@ -40,5 +40,14 @@ export default {
     }).then((data) => {
       return data;
     });
+  },
+  following: ({user, skip, limit}) => {
+    return clients[user].following({
+      limit: limit,
+      skip: skip
+    }).then((data) => {
+      // console.log(data);
+      return data;
+    });
   }
 }

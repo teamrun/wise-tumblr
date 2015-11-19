@@ -31,12 +31,14 @@ var schema = new GraphQLSchema({
   query: new GraphQLObjectType({
     name: 'query',
     fields: {
+      // ----------------- demo -----------------
       hello: {
         type: GraphQLString,
         resolve: function() {
           return 'world';
         }
       },
+      // ----------------- blog信息 -----------------
       blogInfo: {
         type: UserType,
         args: blogNameArg,
@@ -45,6 +47,7 @@ var schema = new GraphQLSchema({
         }
       },
 
+      // ----------------- blog头像 -----------------
       avatar: {
         type: GraphQLString,
         args: _.assign({
@@ -59,11 +62,12 @@ var schema = new GraphQLSchema({
         }
       },
 
+      // ----------------- 关注人的最新posts -----------------
       dashboard: {
         type: new GraphQLList(PostType),
         // 获取最新的posts: 不传sinceId, 只传limit
         // 下拉加载更多: 传sinceId, 传limit
-        args: _.assign({}, loggedInUser, {
+        args: _.merge({}, loggedInUser, {
           siceId: {
             type: GraphQLInt,
             description: '边界博文的id, 取这个之前的posts'
@@ -77,13 +81,14 @@ var schema = new GraphQLSchema({
           return Service.dashboard(param.user, param.sinceId, param.limit);
         }
       },
+      // ----------------- 本人like了的posts -----------------
       likes: {
         type: LikesType,
         /*
           获取的时候 一直是从最新liked的开始拿的
           可用after来检查是否有最新的likes
         */
-        args:  _.assign({}, loggedInUser, {
+        args:  _.merge({}, loggedInUser, {
           after: {
             type: GraphQLInt,
             description: '边界参数 三选一 在这个秒之后like的posts'
@@ -103,6 +108,35 @@ var schema = new GraphQLSchema({
         }),
         resolve: (obj, param) => {
           return Service.likes(param);
+        }
+      },
+      // ----------------- 本人关注了哪些人 -----------------
+      following: {
+        type: new GraphQLObjectType({
+          name: 'following',
+          fields: {
+            blogs: {
+              type: new GraphQLList(UserType),
+              description: '关注的人们',
+            },
+            total_blogs: {
+              type: GraphQLInt,
+              description: '关注总数'
+            }
+          }
+        }),
+        args: _.merge({}, loggedInUser, {
+          skip: {
+            type: GraphQLInt,
+            description: '边界参数 跳过多少'
+          },
+          limit: {
+            type: GraphQLInt,
+            description: '获取多少个 默认20'
+          }
+        }),
+        resolve: (obj, param) => {
+          return Service.following(param);
         }
       }
 
