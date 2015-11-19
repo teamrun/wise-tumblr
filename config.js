@@ -7,8 +7,5 @@ module.exports ={
     user       : "",
     pass       : "",
     database   : "tumblr"
-  },
-  tumblr: {
-
   }
 };
