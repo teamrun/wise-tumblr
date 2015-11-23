@@ -190,7 +190,7 @@ let _post_obj_fields = {
 };
 
 let PostType = new GraphQLObjectType({
-  name: 'PostType',
+  name: 'Post',
   description: '发布的post的模型',
   fields: () => {
     return _post_obj_fields
@@ -209,7 +209,7 @@ let LikedPostType = new GraphQLObjectType({
 });
 
 let LikesType = new GraphQLObjectType({
-  name: 'LikesType',
+  name: 'Likes',
   description: '获取likes的返回数据 封装了post list 和 liked_coutn',
   fields: {
     liked_posts: {
