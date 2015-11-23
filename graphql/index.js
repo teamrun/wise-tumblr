@@ -68,7 +68,7 @@ var schema = new GraphQLSchema({
         // 获取最新的posts: 不传sinceId, 只传limit
         // 下拉加载更多: 传sinceId, 传limit
         args: _.merge({}, loggedInUser, {
-          siceId: {
+          sinceId: {
             type: GraphQLInt,
             description: '边界博文的id, 取这个之前的posts'
           },
