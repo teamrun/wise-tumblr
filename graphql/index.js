@@ -70,15 +70,19 @@ var schema = new GraphQLSchema({
         args: _.merge({}, loggedInUser, {
           sinceId: {
             type: GraphQLInt,
-            description: '边界博文的id, 取这个之前的posts'
+            description: '边界博文的id, 取这个(创建时间)之后的posts'
           },
           limit: {
             type: GraphQLInt,
             description: '取多少个, 默认为20'
+          },
+          offset: {
+            type: GraphQLInt,
+            description: '跳过多少个'
           }
         }),
         resolve: (obj, param) => {
-          return Service.dashboard(param.user, param.sinceId, param.limit);
+          return Service.dashboard(param);
         }
       },
       // ----------------- 本人like了的posts -----------------

@@ -29,6 +29,7 @@
     "graphql": "^0.4.7",
     "jade": "^1.11.0",
     "koa": "^1.1.0",
+    "koa-better-body": "^1.0.17",
     "koa-bodyparser": "^2.0.1",
     "koa-router": "^5.2.3",
     "koa-static": "^1.5.1",

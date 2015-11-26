@@ -20,10 +20,12 @@ export default {
   },
   // dashboard, 获取最新posts数据
   // 传sinceId, 传limit
-  dashboard: (user, sinceId, limit) => {
+  dashboard: (param) => {
+    let { user, limit, offset, sinceId } = param;
     return clients[user].dashboard({
       limit: limit,
-      sinceId: sinceId
+      since_id: sinceId,
+      offset: offset
     }).then((data) => {
       // console.log(data.posts.map(function(item){
       //   return item.photos
