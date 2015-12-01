@@ -14,7 +14,7 @@ const {
   GraphQLList } = types;
 
 
-const host = (process.env.NODE_ENV === 'porduction')? 'http://chenllos.com:9016' : 'http://localhost:9016';
+const host = (process.env.NODE_ENV === 'production')? 'http://chenllos.com:9016' : 'http://localhost:9016';
 let processResourceUrl = (url) => {
   return host + '/fileproxy?url=' + url;
 }
