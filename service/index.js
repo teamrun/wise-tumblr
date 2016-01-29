@@ -9,14 +9,14 @@ export default {
   blogInfo: (blogName) => {
     return clients.random.blogInfo(blogName)
       .then((data) => {
-        return data.blog
+        return data.blog;
       });
   },
   avatar: (param) => {
     return clients.random.avatar(param.name, param.size)
       .then((data) => {
         return data.avatar_url;
-      })
+      });
   },
   // dashboard, 获取最新posts数据
   // 传sinceId, 传limit
@@ -52,4 +52,4 @@ export default {
       return data;
     });
   }
-}
+};

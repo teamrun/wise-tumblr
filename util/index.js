@@ -13,7 +13,7 @@ function promisify(asyncFn, ctx){
         err? reject(err) : resolve(data);
       }));
     });
-  }
+  };
 }
 
 function wait(time){

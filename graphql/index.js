@@ -26,7 +26,7 @@ const blogNameArg = {
     type: new GraphQLNonNull(GraphQLString),
     description: 'blog name'
   }
-}
+};
 var schema = new GraphQLSchema({
   query: new GraphQLObjectType({
     name: 'query',

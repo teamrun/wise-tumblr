@@ -17,7 +17,7 @@ const {
 const host = (process.env.NODE_ENV === 'production')? 'http://chenllos.com:9016' : 'http://localhost:9016';
 let processResourceUrl = (url) => {
   return host + '/fileproxy?url=' + url;
-}
+};
 
 
 
@@ -62,7 +62,7 @@ var UserType = new GraphQLObjectType({
             });
         }
       }
-    }
+    };
   }
 });
 
@@ -81,7 +81,7 @@ let ImageType = new GraphQLObjectType({
       height: {type: GraphQLInt}
     };
   }
-})
+});
 
 let PhotoResourceType = new GraphQLObjectType({
   name: 'PostPhoto',
@@ -113,7 +113,7 @@ let PhotoResourceType = new GraphQLObjectType({
           return resource.original_size;
         }
       }
-    }
+    };
   }
 });
 
@@ -180,7 +180,7 @@ let _post_obj_fields = {
           postId: post.id,
           index: i
         });
-      })
+      });
     }
   },
   caption: {
@@ -193,7 +193,7 @@ let PostType = new GraphQLObjectType({
   name: 'Post',
   description: '发布的post的模型',
   fields: () => {
-    return _post_obj_fields
+    return _post_obj_fields;
   }
 });
 

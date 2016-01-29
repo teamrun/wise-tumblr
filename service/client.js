@@ -25,7 +25,7 @@ for(var i in confs){
 }
 
 let randomClient = () => {
-  return clients[_.sample(names)]
+  return clients[_.sample(names)];
 };
 
 Object.defineProperty(clients, 'random', {

@@ -44,7 +44,7 @@ var search = window.location.search;
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(graphQLParams),
     }).then(function (response) {
-      return response.json()
+      return response.json();
     });
   }
   // Render <GraphiQL /> into the body.
