@@ -33,10 +33,10 @@ export default {
       return data.posts;
     });
   },
-  likes: ({user, skip, limit, after, before}) => {
+  likes: ({user, offset, limit, after, before}) => {
     return clients[user].likes({
       limit: limit,
-      skip: skip,
+      offset: offset,
       after: after,
       before: before
     }).then((data) => {

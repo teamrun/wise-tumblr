@@ -101,7 +101,7 @@ var schema = new GraphQLSchema({
             type: GraphQLInt,
             description: '边界参数 三选一 在这个秒之前like的posts'
           },
-          skip: {
+          offset: {
             type: GraphQLInt,
             description: '边界参数 三选一 跳过多少个'
           },
