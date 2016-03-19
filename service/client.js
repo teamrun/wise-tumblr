@@ -1,4 +1,6 @@
+import path from 'path';
 import _ from 'lodash';
+
 import clientCreator from '../util/clientCreator';
 
 let clients = {};
@@ -8,13 +10,13 @@ const base_conf = {
   consumer_secret: 'ATdwEZ8DlfprOiUGqReAoHJZAjs5lEHOuDZ8khAvhZzEdYujKM',
 };
 
-let confs = [
-  {
-    name: 'libertyartchen',
-    token: 'LWyVXvxt4AAVT0lMT370pwBRFhoxKna8ibAH2SzSwaqxTNJV9U',
-    token_secret: 'LDgi43Yfd53EezKZyhlU74TkeQRtd5xMmZLTtfBzpEOOnq2y2e'
-  }
-];
+let clientConf = [];
+try{
+  clientConf = require('../client_conf.json');
+}
+catch(e){}
+
+let confs = clientConf;
 
 for(var i in confs){
   var item = confs[i];

@@ -2,3 +2,5 @@
 node_modules/*
 
 test/*.json
+
+client_conf.json
