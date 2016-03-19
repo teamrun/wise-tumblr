@@ -117,6 +117,23 @@ let PhotoResourceType = new GraphQLObjectType({
   }
 });
 
+let PlayerItemType = new GraphQLObjectType({
+  name: 'PlayerItem',
+  description: '视频播放器or资源item',
+  fields: () => {
+    return {
+      width: {
+        type: GraphQLInt,
+        description: '宽度'
+      },
+      embed_code: {
+        type: GraphQLString,
+        description: 'string: HTML for embedding the video player'
+      }
+    };
+  }
+})
+
 // 将post对象的所有属性拿出来 方便复用
 let _post_obj_fields = {
   id: {
@@ -187,6 +204,16 @@ let _post_obj_fields = {
     type: GraphQLString,
     description: 'photo or video的描述'
   },
+  player: {
+    type: new GraphQLList(PlayerItemType),
+    description: '视频播放器or资源',
+    resolve: function(post){
+      if(post.type !== 'video'){
+        return [];
+      }
+      return post.player;
+    }
+  }
 };
 
 let PostType = new GraphQLObjectType({
