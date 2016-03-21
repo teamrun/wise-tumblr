@@ -1,17 +1,17 @@
-var path = require('path');
+const path = require('path');
 
-var _ = require('lodash');
-var moment = require('moment');
-var types = require('graphql/type');
-
-
+const _ = require('lodash');
+const moment = require('moment');
 const {
   GraphQLObjectType,
   GraphQLNonNull,
   GraphQLSchema,
   GraphQLString,
   GraphQLInt,
-  GraphQLList } = types;
+  GraphQLList } = require('graphql/type');
+
+
+// const  = types;
 
 
 const host = (process.env.NODE_ENV === 'production')? 'http://chenllos.com:9016' : 'http://localhost:9016';
@@ -21,7 +21,7 @@ let processResourceUrl = (url) => {
 
 
 
-var UserType = new GraphQLObjectType({
+const UserType = new GraphQLObjectType({
   name: 'User',
   description: 'tumblr用户, 相当于api中的blog',
   fields: function(){
@@ -66,7 +66,7 @@ var UserType = new GraphQLObjectType({
   }
 });
 
-let ImageType = new GraphQLObjectType({
+const ImageType = new GraphQLObjectType({
   name: 'Image',
   description: '图片资源 包括: url, width, height',
   fields: () => {
@@ -83,7 +83,7 @@ let ImageType = new GraphQLObjectType({
   }
 });
 
-let PhotoResourceType = new GraphQLObjectType({
+const PhotoResourceType = new GraphQLObjectType({
   name: 'PostPhoto',
   description: 'post的图片 抽象出的类型',
   fields: () => {
@@ -224,34 +224,8 @@ let PostType = new GraphQLObjectType({
   }
 });
 
-let LikedPostType = new GraphQLObjectType({
-  name: 'LikedPostType',
-  description: 'likes 返回的post数据, 比原始的post多一些属性',
-  fields: _.merge({}, _post_obj_fields, {
-    liked_timestamp: {
-      type: GraphQLInt,
-      description: 'like操作的时间 unix秒'
-    }
-  })
-});
-
-let LikesType = new GraphQLObjectType({
-  name: 'Likes',
-  description: '获取likes的返回数据 封装了post list 和 liked_coutn',
-  fields: {
-    liked_posts: {
-      type: new GraphQLList(LikedPostType),
-      description: 'like了的post的列表'
-    },
-    liked_count: {
-      type: GraphQLInt,
-      description: 'like了的个数'
-    },
-  }
-});
-
 module.exports = {
   UserType,
   PostType,
-  LikesType
+  _post_obj_fields
 };

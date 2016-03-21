@@ -1,6 +1,6 @@
-var _ = require('lodash');
-var co = require('co');
-var GraphQLTypes = require('graphql/type');
+const _ = require('lodash');
+const co = require('co');
+const GraphQLTypes = require('graphql/type');
 
 
 const {
@@ -12,7 +12,8 @@ const {
   GraphQLList } = GraphQLTypes;
 
 
-var {UserType, PostType, LikesType} = require('./types');
+const { UserType, PostType } = require('./types/base');
+const { LikesRespType, FollowingRespType } = require('./types/complex');
 
 const loggedInUser = {
   user: {
@@ -34,7 +35,7 @@ var schema = new GraphQLSchema({
       // ----------------- demo -----------------
       hello: {
         type: GraphQLString,
-        resolve: function() {
+        resolve: () => {
           return 'world';
         }
       },
@@ -87,7 +88,7 @@ var schema = new GraphQLSchema({
       },
       // ----------------- 本人like了的posts -----------------
       likes: {
-        type: LikesType,
+        type: LikesRespType,
         /*
           获取的时候 一直是从最新liked的开始拿的
           可用after来检查是否有最新的likes
@@ -111,24 +112,13 @@ var schema = new GraphQLSchema({
           }
         }),
         resolve: (obj, param) => {
+          console.log(Object.keys(Service));
           return Service.likes(param);
         }
       },
       // ----------------- 本人关注了哪些人 -----------------
       following: {
-        type: new GraphQLObjectType({
-          name: 'following',
-          fields: {
-            blogs: {
-              type: new GraphQLList(UserType),
-              description: '关注的人们',
-            },
-            total_blogs: {
-              type: GraphQLInt,
-              description: '关注总数'
-            }
-          }
-        }),
+        type: FollowingRespType,
         args: _.merge({}, loggedInUser, {
           skip: {
             type: GraphQLInt,

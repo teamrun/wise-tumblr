@@ -1,4 +1,4 @@
-import request from 'request';
+const request = require('request');
 
 let errHandler = (err) => {
   if(err){
@@ -6,7 +6,7 @@ let errHandler = (err) => {
   }
 };
 
-export default (url, req) => {
+module.exports = (url, req) => {
   url = decodeURIComponent(url);
   return req.pipe(request(url, errHandler))
 };

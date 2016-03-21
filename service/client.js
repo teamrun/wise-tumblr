@@ -1,7 +1,7 @@
-import path from 'path';
-import _ from 'lodash';
+const path = require('path');
+const _ = require('lodash');
 
-import clientCreator from '../util/clientCreator';
+const clientCreator = require('../util/clientCreator');
 
 let clients = {};
 let names = [];
@@ -35,4 +35,4 @@ Object.defineProperty(clients, 'random', {
 });
 
 
-export default clients
+module.exports = clients

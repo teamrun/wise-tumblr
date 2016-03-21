@@ -1,11 +1,11 @@
-import _ from 'lodash';
+const _ = require('lodash');
 
-import clients from './client';
+const clients = require('./client');
 
 let foo = {foo: 'bar'};
 
 
-export default {
+module.exports = {
   blogInfo: (blogName) => {
     return clients.random.blogInfo(blogName)
       .then((data) => {

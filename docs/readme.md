@@ -6,3 +6,14 @@
 `/fileproxy?url=resource_url`
 
 将图片或视频的url放在query里, 服务端会做request pipe, 实现file proxy
+
+
+
+
+!!!貌似polyfill实现的 export和import有点问题!!!
+不要用export 和 import!!
+
+用到的es6:
+* object简写, 解构
+* arrow function
+* 

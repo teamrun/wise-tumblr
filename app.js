@@ -1,5 +1,7 @@
+require('babel-register');
+require("babel-polyfill");
+
 var app = require('koa')();
-require('babel/register');
 
 var setup = require('./lib');
 
