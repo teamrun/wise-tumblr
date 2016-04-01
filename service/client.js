@@ -16,10 +16,8 @@ try{
 }
 catch(e){}
 
-let confs = clientConf;
-
-for(var i in confs){
-  var item = confs[i];
+for(var i in clientConf){
+  var item = clientConf[i];
   var name = item.name;
   names.push(name);
 
