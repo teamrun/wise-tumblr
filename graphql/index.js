@@ -1,6 +1,7 @@
 const _ = require('lodash');
 const co = require('co');
 const GraphQLTypes = require('graphql/type');
+const log = console.log.bind(console);
 
 
 const {
@@ -12,7 +13,7 @@ const {
   GraphQLList } = GraphQLTypes;
 
 
-const { UserType, PostType } = require('./types/base');
+const { UserType, PostType, CommonSucRes } = require('./types/base');
 const { LikesRespType, FollowingRespType } = require('./types/complex');
 
 const loggedInUser = {
@@ -112,7 +113,6 @@ var schema = new GraphQLSchema({
           }
         }),
         resolve: (obj, param) => {
-          console.log(Object.keys(Service));
           return Service.likes(param);
         }
       },
@@ -136,7 +136,47 @@ var schema = new GraphQLSchema({
 
       // ----------- query ends here -----------
     }
+  }),
+
+  // -*-*-*-*-*-*-*-*-*-*-*- mutation -*-*-*-*-*-*-*-*-*-*-*-*-*-
+  mutation: new GraphQLObjectType({
+    name: 'Mutation',
+    fields: {
+      unlike: {
+        type: CommonSucRes,
+        args: _.merge({}, loggedInUser, {
+          postId: {
+            name: 'id of the post',
+            type: GraphQLString
+          },
+          reblogKey: {
+            name: 'reblogKey',
+            type: GraphQLString
+          }
+        }),
+        resolve: (obj, param, source, fieldAST) => {
+          return Service.unlike(param);
+        }
+      },
+      like: {
+        type: CommonSucRes,
+        args: _.merge({}, loggedInUser, {
+          postId: {
+            name: 'id of the post',
+            type: GraphQLString
+          },
+          reblogKey: {
+            name: 'reblogKey',
+            type: GraphQLString
+          }
+        }),
+        resolve: (obj, param, source, fieldAST) => {
+          return Service.like(param);
+        }
+      }
+    }
   })
+
 });
 
 module.exports = schema;

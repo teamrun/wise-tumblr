@@ -1,6 +1,7 @@
 const _ = require('lodash');
 
 const clients = require('./client');
+const log = console.log.bind(console);
 
 let foo = {foo: 'bar'};
 
@@ -42,6 +43,15 @@ module.exports = {
     }).then((data) => {
       return data;
     });
+  },
+  // like 和 unlike的操作, 成功时一个空数组的返回值
+  // like 可以重复操作
+  // unlike不可以 会遇到404错误
+  like: ({user, postId, reblogKey}) => {
+    return clients[user].like(postId, reblogKey);
+  },
+  unlike: ({user, postId, reblogKey}) => {
+    return clients[user].unlike(postId, reblogKey);
   },
   following: ({user, skip, limit}) => {
     return clients[user].following({

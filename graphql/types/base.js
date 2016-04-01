@@ -137,6 +137,7 @@ let PlayerItemType = new GraphQLObjectType({
 // 将post对象的所有属性拿出来 方便复用
 let _post_obj_fields = {
   id: {
+    // 由于数字太长 超出了int的限制
     type: GraphQLString,
     description: 'id, 唯一标识',
   },
@@ -224,8 +225,25 @@ let PostType = new GraphQLObjectType({
   }
 });
 
+
+let CommonSucRes = new GraphQLObjectType({
+  name: 'CommonSucRes',
+  description: 'CommonSucRes',
+  fields: {
+    code: {
+      type: GraphQLInt,
+      resolve: () => 200
+    },
+    message: {
+      type: GraphQLString,
+      resolve: () => 'ok'
+    }
+  }
+});
+
 module.exports = {
   UserType,
   PostType,
+  CommonSucRes,
   _post_obj_fields
 };

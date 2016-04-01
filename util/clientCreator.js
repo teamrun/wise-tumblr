@@ -16,6 +16,10 @@ function creator(clientConf){
   client.following = promisify(client.following, client);
   // 当前用户 like的posts
   client.likes = promisify(client.likes, client);
+  // like动作
+  client._like = client.like;
+  client.like = promisify(client.like, client);
+  client.unlike = promisify(client.unlike, client);
 
   return client;
 }
