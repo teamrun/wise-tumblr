@@ -1,3 +1,5 @@
+'use strict';
+
 const _ = require('lodash');
 const co = require('co');
 const GraphQLTypes = require('graphql/type');

@@ -1,3 +1,5 @@
+'use strict';
+
 var debug = require('debug')('tclient');
 var tumblr = require('tumblr.js');
 
