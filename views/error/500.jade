@@ -5,4 +5,4 @@ block _head
 
 block _body
   h2 500 page
-  p #{stack}
+  pre(style="font-family: 'inconsolata';") !{stack.split('\n').join('<br>')}
