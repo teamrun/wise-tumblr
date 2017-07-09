@@ -31,7 +31,7 @@ let LikedPostType = new GraphQLObjectType({
 });
 
 let LikesRespType = new GraphQLObjectType({
-  name: 'Likes',
+  name: 'LikesResp',
   description: '获取likes的返回数据 封装了post list 和 liked_coutn',
   fields: {
     liked_posts: {
@@ -46,7 +46,7 @@ let LikesRespType = new GraphQLObjectType({
 });
 
 const FollowingRespType = new GraphQLObjectType({
-  name: 'following',
+  name: 'FollowingResp',
   fields: {
     blogs: {
       type: new GraphQLList(UserType),

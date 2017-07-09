@@ -31,6 +31,9 @@ const blogNameArg = {
     description: 'blog name'
   }
 };
+
+
+// TODO: user validate!! if user exists
 var schema = new GraphQLSchema({
   query: new GraphQLObjectType({
     name: 'query',
@@ -74,7 +77,7 @@ var schema = new GraphQLSchema({
         args: _.merge({}, loggedInUser, {
           sinceId: {
             type: GraphQLInt,
-            description: '边界博文的id, 取这个(创建时间)之后的posts'
+            description: '(暂时不支持)边界博文的id, 取这个(创建时间)之后的posts'
           },
           limit: {
             type: GraphQLInt,

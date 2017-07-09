@@ -1,7 +1,31 @@
 'use strict';
 
-var debug = require('debug')('tclient');
-var tumblr = require('tumblr.js');
+const url = require('url');
+const request = require('request');
+
+let tumblr;
+if(process.env.NODE_ENV === 'production'){
+  tumblr = require('tumblr.js');
+}
+else{
+  tumblr = require('../lib/tumblr');
+  tumblr.request({
+    get: (opt, callback) => {
+      let _opt = Object.assign({}, opt);
+      let urlInfo = url.parse(opt.url);
+      _opt.url = 'http://proxy.chenllos.com/api';
+      _opt.headers['x-proxy-dest'] = encrypt(opt.url);
+      _opt.headers['x-passed-oauth'] = JSON.stringify(_opt.oauth);
+
+      return request.get(_opt, (err, resp, body) => {
+        callback(err, resp, body);
+      });
+    },
+    post: (opt, callback) => {
+
+    }
+  });
+}
 
 
 function creator(clientConf){

@@ -5,3 +5,4 @@ test/*.json
 
 client_conf.json
 local_config.js
+.idea/*

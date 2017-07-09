@@ -38,6 +38,7 @@
     "moment": "^2.10.6",
     "request": "^2.65.0",
     "require-dir": "^0.3.0",
+    "toshihiko": "^0.8.3",
     "tumblr.js": "0.0.7"
   }
 }

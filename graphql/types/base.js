@@ -12,15 +12,14 @@ const {
   GraphQLInt,
   GraphQLList } = require('graphql/type');
 
+const log = require('../../lib/logger');
 
 // const  = types;
 
-
-const host = (process.env.NODE_ENV === 'production')? 'http://chenllos.com:9016' : 'http://localhost:9016';
 let processResourceUrl = (url) => {
-  return host + '/fileproxy?url=' + url;
+  // 不再由本 server 做 file-proxy
+  return url;
 };
-
 
 
 const UserType = new GraphQLObjectType({
@@ -50,19 +49,20 @@ const UserType = new GraphQLObjectType({
         // 这里还可以再定义参数!!!!
         // 跟schema中的GraphQLObjectType一样
         // 访问每一个属性都可以添加参数
-        args: {
-          size: {
-            type: GraphQLInt
-          }
-        },
-        resolve: (user, param) => {
-          let name = user.name;
-          let size = param.size;
-          return Service.avatar({name, size})
-            .then((url) => {
-              return processResourceUrl(url);
-            });
-        }
+        // args: {
+        //   size: {
+        //     type: GraphQLInt
+        //   }
+        // },
+        // 无需 resolve, 数据库里有存储
+        // resolve: (user, param) => {
+        //   let name = user.name;
+        //   let size = param.size;
+        //   return Service.avatar({name, size})
+        //     .then((url) => {
+        //       return processResourceUrl(url);
+        //     });
+        // }
       }
     };
   }
@@ -147,6 +147,13 @@ let _post_obj_fields = {
     type: GraphQLString,
     description: '发布者的名字',
   },
+  blog: {
+    type: UserType,
+    description: '发布者的信息',
+    resolve: (post) => {
+      return Service.blogInfo(post.blog_name);
+    }
+  },
   post_url: {
     type: GraphQLString,
     description: 'post的页面地址 定位到这个post的tumblr页面',
@@ -214,6 +221,7 @@ let _post_obj_fields = {
       if(post.type !== 'video'){
         return [];
       }
+      log.debug(post.player);
       return post.player;
     }
   }

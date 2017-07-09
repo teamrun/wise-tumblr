@@ -44,8 +44,20 @@ function* doUtil(fn, exitCond){
   return ret;
 }
 
+let encrypt = (str) => {
+  let base64 = (new Buffer(str)).toString('base64');
+  return base64.split('').reverse().join('');
+}
+
+let decrypt = (str) => {
+  let base64 = str.split('').reverse().join('');
+  return (new Buffer(base64, 'base64')).toString();
+}
+
 module.exports = {
   promisify,
   wait,
-  doUtil
+  doUtil,
+  decrypt,
+  encrypt
 };
